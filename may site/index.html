@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a16">
+  <meta name="description" content="WESTY — personal links and contact">
+  <title>WESTY · Links</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: #f5f6ff;
+      background: #080a16;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      --muted: #aeb7d0;
+      --line: rgba(220, 228, 255, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: #080a16; }
+    body {
+      position: relative;
+      isolation: isolate;
+      min-height: 100vh;
+      min-height: 100svh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      overflow-x: hidden;
+      padding: 30px 16px;
+      background: #080a16;
+    }
+
+    .backdrop {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 20%, rgba(43, 76, 157, .32), transparent 55%),
+        radial-gradient(ellipse at 12% 86%, rgba(50, 80, 173, .2), transparent 42%),
+        linear-gradient(145deg, #080b19, #0b1024 55%, #090817);
+    }
+
+    .backdrop::before {
+      position: absolute;
+      inset: 0;
+      content: "";
+      opacity: .56;
+      background-image:
+        radial-gradient(1px 1px at 10% 18%, #fff 60%, transparent),
+        radial-gradient(1px 1px at 23% 72%, #dce7ff 60%, transparent),
+        radial-gradient(2px 2px at 35% 33%, #fff 60%, transparent),
+        radial-gradient(1px 1px at 51% 14%, #dce7ff 60%, transparent),
+        radial-gradient(1px 1px at 64% 61%, #fff 60%, transparent),
+        radial-gradient(2px 2px at 78% 27%, #dce7ff 60%, transparent),
+        radial-gradient(1px 1px at 91% 77%, #fff 60%, transparent),
+        radial-gradient(1px 1px at 84% 48%, #dce7ff 60%, transparent);
+      background-size: 390px 340px;
+      animation: stars-drift 42s ease-in-out infinite alternate;
+    }
+
+    .glow {
+      position: absolute;
+      width: min(58vw, 560px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: .17;
+      pointer-events: none;
+      animation: glow-drift 24s ease-in-out infinite alternate;
+    }
+    .glow-blue { top: -25%; left: -15%; background: #3769ed; }
+    .glow-violet { right: -22%; bottom: -36%; background: #7446c6; animation-delay: -9s; }
+
+    .profile-card {
+      position: relative;
+      width: min(100%, 470px);
+      padding: 40px clamp(22px, 7vw, 46px) 26px;
+      border: 1px solid rgba(226, 232, 255, .2);
+      border-radius: 27px;
+      background: linear-gradient(145deg, rgba(26, 33, 57, .82), rgba(12, 16, 32, .82) 58%, rgba(22, 19, 42, .8));
+      box-shadow: 0 30px 90px rgba(0, 0, 0, .48), 0 0 65px rgba(74, 105, 205, .12), inset 0 1px rgba(255, 255, 255, .08);
+      text-align: center;
+      backdrop-filter: blur(20px) saturate(130%);
+      -webkit-backdrop-filter: blur(20px) saturate(130%);
+      animation: arrive .7s ease both;
+    }
+
+    .profile-card::before {
+      position: absolute;
+      top: 0;
+      left: 19%;
+      width: 62%;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, transparent, rgba(183, 203, 255, .75), transparent);
+    }
+
+    .avatar-frame {
+      width: 106px;
+      height: 106px;
+      margin: 0 auto 18px;
+      padding: 2px;
+      border-radius: 50%;
+      background: conic-gradient(from 215deg, #7292ff, #c1a8ff, #82d4ff, #7292ff);
+      box-shadow: 0 0 30px rgba(111, 148, 255, .3);
+      animation: avatar-arrive .7s .08s ease both;
+    }
+    .avatar {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      border: 3px solid #12182e;
+      border-radius: 50%;
+      background: radial-gradient(circle at 32% 25%, rgba(255,255,255,.35), transparent 33%), linear-gradient(145deg, #b8c9f1, #7586b5 58%, #3b4774);
+      color: #12182e;
+      font-size: 48px;
+      font-weight: 700;
+      letter-spacing: -.08em;
+    }
+
+    h1 {
+      margin: 0;
+      color: #fbfcff;
+      font-size: clamp(27px, 7vw, 33px);
+      font-weight: 700;
+      letter-spacing: .025em;
+      line-height: 1.25;
+      text-shadow: 0 0 24px rgba(149, 173, 255, .2);
+      animation: arrive .55s .15s ease both;
+    }
+    .caption {
+      margin: 8px 0 0;
+      color: #a8b3cf;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .18em;
+      animation: arrive .55s .22s ease both;
+    }
+    blockquote {
+      max-width: 345px;
+      margin: 17px auto 0;
+      color: #e0e5f5;
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 500;
+      line-height: 1.75;
+      text-wrap: pretty;
+      animation: arrive .55s .28s ease both;
+    }
+
+    .link-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 25px;
+      padding-top: 19px;
+      border-top: 1px solid rgba(220, 227, 255, .14);
+    }
+    .link-button {
+      min-height: 53px;
+      display: grid;
+      grid-template-columns: 27px minmax(0, 1fr) 18px;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 15px;
+      border: 1px solid rgba(222, 229, 255, .2);
+      border-radius: 14px;
+      background: linear-gradient(105deg, rgba(119, 149, 228, .12), rgba(255,255,255,.035) 55%, rgba(170, 127, 229, .09)), rgba(12, 16, 31, .5);
+      color: #f5f6ff;
+      text-align: left;
+      text-decoration: none;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+      animation: arrive .45s ease both;
+    }
+    .link-button:nth-child(1) { animation-delay: .33s; }
+    .link-button:nth-child(2) { animation-delay: .38s; }
+    .link-button:nth-child(3) { animation-delay: .43s; }
+    .link-button:nth-child(4) { animation-delay: .48s; }
+    .link-button:nth-child(5) { animation-delay: .53s; }
+    .link-button:nth-child(6) { animation-delay: .58s; }
+    .link-button:nth-child(7) { animation-delay: .63s; }
+    .link-button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(171, 196, 255, .58);
+      box-shadow: 0 9px 25px rgba(51, 82, 171, .2), inset 0 1px rgba(255,255,255,.08);
+      background-color: rgba(36, 49, 91, .72);
+    }
+    .link-button:active { transform: translateY(0); }
+    .link-button:focus-visible { outline: 2px solid #afcaff; outline-offset: 3px; }
+    .link-icon {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(183, 199, 255, .2);
+      border-radius: 8px;
+      background: linear-gradient(145deg, rgba(105, 138, 232, .25), rgba(151, 105, 207, .18));
+      color: #d2ddff;
+      font-size: 13px;
+    }
+    .link-title { min-width: 0; overflow-wrap: anywhere; font-size: 13px; font-weight: 600; }
+    .link-arrow { color: #aab8dc; font-size: 16px; text-align: right; }
+    .footer {
+      margin-top: 26px;
+      padding-top: 17px;
+      border-top: 1px solid rgba(220, 227, 255, .1);
+      color: rgba(220, 226, 244, .62);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .06em;
+      animation: arrive .5s .7s ease both;
+    }
+
+    @keyframes arrive {
+      from { opacity: 0; transform: translateY(7px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes avatar-arrive {
+      from { opacity: 0; transform: translateY(8px) scale(.94); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes stars-drift {
+      to { transform: translate3d(10px, -14px, 0); }
+    }
+    @keyframes glow-drift {
+      to { transform: translate3d(8vw, 8vh, 0); }
+    }
+
+    @media (max-width: 520px) {
+      body { padding: 18px 12px; }
+      .profile-card { width: min(100%, 430px); padding: 31px 19px 22px; border-radius: 23px; }
+      .avatar-frame { width: 94px; height: 94px; }
+      blockquote { margin-top: 15px; font-size: 13px; }
+      .link-list { gap: 9px; margin-top: 22px; padding-top: 16px; }
+      .link-button { min-height: 52px; border-radius: 13px; }
+      .footer { margin-top: 22px; padding-top: 15px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="backdrop" aria-hidden="true">
+    <span class="glow glow-blue"></span>
+    <span class="glow glow-violet"></span>
+  </div>
+
+  <main class="profile-card">
+    <header>
+      <div class="avatar-frame"><div class="avatar" aria-label="WESTY avatar">W</div></div>
+      <h1>@WESTY</h1>
+      <p class="caption">PERSONAL LINKS <span aria-hidden="true">·</span> DIGITAL CREATOR</p>
+      <blockquote>«Роби з душею — і результат говоритиме сам за себе.»</blockquote>
+    </header>
+
+    <nav class="link-list" aria-label="WESTY links">
+      <!-- Add your URLs below. Leave "" until you have a real link. -->
+      <a class="link-button" data-url="" aria-label="My Telegram link">
+        <span class="link-icon" aria-hidden="true">➤</span><span class="link-title">My Telegram</span><span class="link-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="link-button" data-url="" aria-label="TikTok link">
+        <span class="link-icon" aria-hidden="true">♪</span><span class="link-title">TikTok</span><span class="link-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="link-button" data-url="" aria-label="Info link">
+        <span class="link-icon" aria-hidden="true">i</span><span class="link-title">Info</span><span class="link-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="link-button" data-url="" aria-label="Stars link">
+        <span class="link-icon" aria-hidden="true">☆</span><span class="link-title">Stars</span><span class="link-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="link-button" data-url="" aria-label="Telegram Premium link">
+        <span class="link-icon" aria-hidden="true">◇</span><span class="link-title">Telegram Premium</span><span class="link-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="link-button" data-url="" aria-label="Price link">
+        <span class="link-icon" aria-hidden="true">₴</span><span class="link-title">Price</span><span class="link-arrow" aria-hidden="true">↗</span>
+      </a>
+      <a class="link-button" data-url="" aria-label="Contact me link">
+        <span class="link-icon" aria-hidden="true">✉</span><span class="link-title">Contact me</span><span class="link-arrow" aria-hidden="true">↗</span>
+      </a>
+    </nav>
+
+    <footer class="footer">© 2026 WESTY</footer>
+  </main>
+
+  <script>
+    document.querySelectorAll(".link-button").forEach((link) => {
+      const url = link.dataset.url.trim();
+      if (url) {
+        link.href = url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      } else {
+        link.removeAttribute("href");
+        link.setAttribute("aria-disabled", "true");
+        link.addEventListener("click", (event) => event.preventDefault());
+      }
+    });
+  </script>
+</body>
+</html>
